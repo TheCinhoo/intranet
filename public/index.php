@@ -1,6 +1,6 @@
 <?php
 
-echo "TESTE";
+echo "TESTE 1";
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
