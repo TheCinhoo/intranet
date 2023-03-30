@@ -42,7 +42,7 @@ Route::prefix('app')->group(function () {
     });
 
     Route::get('/produtos', function () {
-        return 'Produtos';
+        return 'Produtos Teste';
     });
 });
 // Route::get(
