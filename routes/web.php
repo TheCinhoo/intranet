@@ -27,7 +27,7 @@ use PhpParser\Node\Stmt\Echo_;
 Route::get('/', [PrincipalController::class, 'principal'])->name('site.index');
 Route::get('/sobreNos', [SobreNosController::class, 'sobreNos'])->name('site.sobreNos');
 Route::get('/contato', [ContatoController::class, 'contato'])->name('site.contato');
-Route::post('/contato', [ContatoController::class, 'contato'])->name('site.contato');
+Route::post('/contato', [ContatoController::class, 'salvar'])->name('site.contato');
 Route::get('/login', function () {
     return 'Login';
 })->name('site.login');
