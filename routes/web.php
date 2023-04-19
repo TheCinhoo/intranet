@@ -5,7 +5,7 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\SobreNosController;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\FornecedorController;
-
+use App\Http\Middleware\LogAcessoMiddleware;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Stmt\Echo_;
 
@@ -24,10 +24,21 @@ use PhpParser\Node\Stmt\Echo_;
 //     return view('welcome');
 // });
 
-Route::get('/', [PrincipalController::class, 'principal'])->name('site.index');
-Route::get('/sobreNos', [SobreNosController::class, 'sobreNos'])->name('site.sobreNos');
-Route::get('/contato', [ContatoController::class, 'contato'])->name('site.contato');
-Route::post('/contato', [ContatoController::class, 'salvar'])->name('site.contato');
+Route::middleware(LogAcessoMiddleware::class)
+    ->get('/', [PrincipalController::class, 'principal'])
+    ->name('site.index');
+
+Route::middleware(LogAcessoMiddleware::class)
+    ->get('/sobreNos', [SobreNosController::class, 'sobreNos'])
+    ->name('site.sobreNos');
+
+Route::middleware(LogAcessoMiddleware::class)
+    ->get('/contato', [ContatoController::class, 'contato'])
+    ->name('site.contato');
+
+Route::post('/contato', [ContatoController::class, 'salvar'])
+    ->name('site.contato');
+
 Route::get('/login', function () {
     return 'Login';
 })->name('site.login');
