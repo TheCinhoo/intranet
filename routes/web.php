@@ -5,7 +5,7 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\SobreNosController;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\FornecedorController;
-use App\Http\Middleware\LogAcessoMiddleware;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Stmt\Echo_;
 
@@ -24,32 +24,29 @@ use PhpParser\Node\Stmt\Echo_;
 //     return view('welcome');
 // });
 
-Route::middleware(LogAcessoMiddleware::class)
-    ->get('/', [PrincipalController::class, 'principal'])
+Route::get('/', [PrincipalController::class, 'principal'])
     ->name('site.index');
 
-Route::middleware(LogAcessoMiddleware::class)
-    ->get('/sobreNos', [SobreNosController::class, 'sobreNos'])
+Route::get('/sobreNos', [SobreNosController::class, 'sobreNos'])
     ->name('site.sobreNos');
 
-Route::middleware(LogAcessoMiddleware::class)
-    ->get('/contato', [ContatoController::class, 'contato'])
+Route::get('/contato', [ContatoController::class, 'contato'])
     ->name('site.contato');
 
 Route::post('/contato', [ContatoController::class, 'salvar'])
     ->name('site.contato');
 
-Route::get('/login', function () {
-    return 'Login';
-})->name('site.login');
+Route::get('/login/{erro?}', [LoginController::class, 'index'])->name('site.login');
+Route::post('/login', [LoginController::class, 'autenticar'])->name('site.login');
 
 //APP
-Route::prefix('app')->group(function () {
+Route::middleware('autenticacao:padrao,visitante')->prefix('app')->group(function () {
     Route::get('/clientes', function () {
         return 'Clientes';
     })->name('app.clientes');
 
-    Route::get('/fornecedores', [FornecedorController::class, 'index'])->name('app.fornecedores');;
+    Route::get('/fornecedores', [FornecedorController::class, 'index'])
+        ->name('app.fornecedores');;
 
     Route::get('/produtos', function () {
         return 'Produtos Testea';
