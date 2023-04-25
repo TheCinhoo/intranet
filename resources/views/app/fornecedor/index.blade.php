@@ -1,74 +1,29 @@
-<h1>Fornecedor</h1>
+@extends('app.layouts.basico')
 
-{{--Fica o Comentário que será descartado pelo interpretador do blade--}}
-<!-- Teste -->
+@section('titulo','Fornecedor')
 
-@php
+@section('conteudo')
+<div class="conteudo-pagina">
+    <div class="titulo-pagina-2">
+        <p>Fornecedor</p>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="">Novo</a></li>
+            <li><a href="">Consulta</a></li>
+        </ul>
+    </div>
+    <div class="informacao-pagina">
+        <div style="width: 30%; margin-left: auto; margin-right: auto;">
+            <form action="" method="post">
+                <input type="text" placeholder="Nome" name="nome" class="borda-preta">
+                <input type="text" placeholder="Site" name="site" class="borda-preta">
+                <input type="text" placeholder="UF" name="uf" class="borda-preta">
+                <input type="text" placeholder="Email" name="email" class="borda-preta">
+                <button type="submit" class="borda-preta">Pesquisar</button>
+            </form>
+        </div>
+    </div>
 
-//Para comentários de uma linha
-
-/*
-Para comentários de multiplas linhas
-*/
-
-
-
-@endphp
-
-{{-- @dd($fornecedores) --}}
-{{--
-@if (count($fornecedores) > 0 && count($fornecedores) < 10 )
-  <h3>Existe alguns fornecedores cadastrados.</h3>
-  @elseif(count($fornecedores) > 10)
-  <h3>Existem Vários Fornecedores cadastrados</h3>
-  @else
-  <h3>Ainda não existem fornecedores cadastrados</h3>
-@endif --}}
-
-Fornecedor: {{$fornecedores[0]['nome']}} <br>
-Status: {{$fornecedores[0]['status']}} <br>
-<hr>
-@if ( !($fornecedores[0]['status'] == 'S') )
-    Fornecedor Inativo com If
-@endif
-<hr>
-@unless($fornecedores[0]['status'] == 'S') {{--Executa se o retorno da condição for false--}}
-    <br>Fornecedor Inativo Com unless
-@endunless
-<br>
-
-<hr>
-@isset($fornecedores)
-    @forelse($fornecedores as $i => $fornecedor)
-
-        {{$loop->iteration}}
-        <br>
-
-        Fornecedor: {{$fornecedor['nome']}}
-        <br>
-        Status: {{$fornecedor['status']}}
-        <br>
-        CNPJ: {{$fornecedor['cnpj'] ?? 'dado não preenchido'}}
-        <br>
-        Telefone: ({{$fornecedor['ddd'] ?? ''}}) {{$fornecedor['telefone'] ?? ''}}
-        @switch($fornecedor['ddd'])
-            @case('11')
-                São Paulo - SP
-                @break
-            @case('85')
-                Fortaleza - CE
-                @break
-            @case('32')
-                Juiz de Fora - MG
-                @break
-            @default
-                Estado não identificado.
-        @endswitch
-        <hr>
-
-        @empty
-            Não existem fornecedores cadastrados.
-    @endforelse
-@endisset
-
-
+</div>
+@endsection
