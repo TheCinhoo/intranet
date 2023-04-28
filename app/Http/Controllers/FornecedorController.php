@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Fornecedor;
 use Illuminate\Http\Request;
+use App\Models\Fornecedor;
+
 
 class FornecedorController extends Controller
 {
-
     public function index()
     {
         return view('app.fornecedor.index');
@@ -20,10 +20,10 @@ class FornecedorController extends Controller
             ->where('site', 'like', '%' . $request->input('site'))
             ->where('uf', 'like', '%' . $request->input('uf'))
             ->where('email', 'like', '%' . $request->input('email'))
-            ->get();
+            ->paginate(5);
 
 
-        return view('app.fornecedor.listar', ['fornecedores' => $fornecedores]);
+        return view('app.fornecedor.listar', ['fornecedores' => $fornecedores, 'request' => $request->all()]);
     }
 
     public function adicionar(Request $request)
@@ -75,5 +75,26 @@ class FornecedorController extends Controller
         $msg = '';
         $fornecedor = Fornecedor::find($id);
         return view('app.fornecedor.adicionar', ['fornecedor' => $fornecedor, 'msg' => $msg]);
+    }
+
+    public function excluir($id, $msg = '')
+    {
+        echo "Excluir o registro $id";
+
+        $msg = '';
+        $delete = Fornecedor::find($id)->delete();
+
+        if ($delete) {
+            $msg = 'Deletado com sucesso!';
+        } else {
+            $msg = 'Erro ao deletar registro!';
+        }
+
+        return redirect('app.fornecedor', ['msg' => $msg]);
+    }
+
+    public function teste($id)
+    {
+        echo "Teste<br>";
     }
 }

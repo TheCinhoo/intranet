@@ -13,7 +13,7 @@ class AutenticacaoMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $meto_autenticacao, $perfil): Response
+    public function handle(Request $request, Closure $next): Response
     {
         if ($request->session()->get('email') != "") {
             return $next($request);

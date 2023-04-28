@@ -24,6 +24,6 @@ class LogAcessoMiddleware
 
         $resposta->setStatusCode(201, 'O status e o texto da resposta foram modificados');
         //Ecaminha a request pra frente indo pro próximo passo das rotas
-        return $next($request);
+        return $resposta;
     }
 }

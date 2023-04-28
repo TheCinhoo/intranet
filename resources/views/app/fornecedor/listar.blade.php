@@ -24,6 +24,7 @@
                     <th>Email</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </thead>
                 <tbody>
                     @foreach ($fornecedores as $fornecedor)
@@ -32,13 +33,25 @@
                         <td>{{$fornecedor->site}}</td>
                         <td>{{$fornecedor->uf}}</td>
                         <td>{{$fornecedor->email}}</td>
-                        <td>Excluir</td>
+                        <td><a href="{{ route('app.fornecedor.excluir', $fornecedor->id)}}"> Excluir</a></td>
                         <td><a href="{{ route('app.fornecedor.editar', $fornecedor->id)}}"> Editar</a></td>
+                        <td><a href="{{ route('app.fornecedor.teste', $fornecedor->id)}}"> Teste</a></td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            {{-- Faz a paginação e continua com a busca corretamente atravéz do metodo appends --}}
+            {{$fornecedores->appends($request)->links()}}
+            <br>
+            {{-- {{$fornecedores->count()}} - Total de Registros por pagina.
+            <br>
+            {{$fornecedores->total()}} - Total de Registros.
+            <br>
+            {{$fornecedores->firstItem()}} - Numero do Primeiro Registro da Pagina
+            <br>
+            {{$fornecedores->lastItem()}} - Numero do Ultimo Registro da Pagina --}}
 
+            Exibindo {{$fornecedores->count()}} fornecedores de {{$fornecedores->total()}}.
         </div>
     </div>
 
