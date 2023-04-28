@@ -47,8 +47,14 @@ Route::middleware('autenticacao:padrao,visitante')->prefix('app')->group(functio
     Route::get('/home', [HomeController::class, 'index'])->name('app.home');
     Route::get('/sair', [LoginController::class, 'sair'])->name('app.sair');
     Route::get('/cliente', [ClienteController::class, 'index'])->name('app.cliente');
-    Route::get('/fornecedor', [FornecedorController::class, 'index'])->name('app.fornecedor');;
-    Route::get('/produto', [ProdutoController::class, 'index'])->name('app.produto');;
+
+    Route::get('/fornecedor', [FornecedorController::class, 'index'])->name('app.fornecedor');
+    Route::post('/fornecedor/listar', [FornecedorController::class, 'listar'])->name('app.fornecedor.listar');
+    Route::get('/fornecedor/adicionar', [FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
+    Route::post('/fornecedor/adicionar', [FornecedorController::class, 'adicionar'])->name('app.fornecedor.adicionar');
+    Route::get('/fornecedor/editar/{id}/{msg?}', [FornecedorController::class, 'editar'])->name('app.fornecedor.editar');
+
+    Route::get('/produto', [ProdutoController::class, 'index'])->name('app.produto');
 });
 
 Route::get('/teste/{p1}/{p2}', [TesteController::class, 'teste'])->name('teste');
