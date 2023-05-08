@@ -16,4 +16,11 @@ class Fornecedor extends Model
     protected $fillable = ['nome', 'site', 'uf', 'email'];
     //soft delete - Importar o soft delete
 
+    public function produtos()
+    {
+        return $this->hasMany('App\Models\Item', 'fornecedor_id', 'id');
+
+        //No caso como os nomes são padrões pode ser usado o metodo apenas passando o caminho do Model acessado
+        // return $this->hasMany('App\Models\Item');
+    }
 }

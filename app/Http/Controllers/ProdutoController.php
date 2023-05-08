@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fornecedor;
 use App\Models\Produto;
-use App\Models\ProdutoDetalhe;
+use App\Models\Item;
 use App\Models\Unidade;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ProdutoController extends Controller
      */
     public function index(Request $request)
     {
-        $produtos = Produto::paginate(10);
+        $produtos = Item::with(['itemDetalhe', 'fornecedor'])->paginate(10); //with carrega preveamente o metodo do model
 
         // foreach ($produtos as $key => $produto) {
         //     $produtoDetalhe = ProdutoDetalhe::where('produto_id', $produto->id)->first();
@@ -36,7 +37,8 @@ class ProdutoController extends Controller
     public function create()
     {
         $unidades = Unidade::all();
-        return view('app.produto.create', ['unidades' => $unidades]);
+        $fornecedores = Fornecedor::all();
+        return view('app.produto.create', ['unidades' => $unidades, 'fornecedores' => $fornecedores]);
     }
 
     /**
@@ -48,18 +50,20 @@ class ProdutoController extends Controller
             'nome' => 'required|min:3',
             'descricao' => 'required|min:3',
             'peso' => 'required|integer',
-            'unidade_id' => 'exists:unidades,id' //exists:<tabela>,<coluna> - Usado para chave estrangeira, pega a tabela de origem e a coluna
+            'unidade_id' => 'exists:unidades,id', //exists:<tabela>,<coluna> - Usado para chave estrangeira, pega a tabela de origem e a coluna
+            'fornecedor_id' => 'exists:fornecedores,id'
         ];
         $feedback = [
             'required' => 'O campo :attribute deve ser preenchido',
             'nome.min' => 'O campo Nome deve ter no mínimo 3 caracteres.',
             'descricao.min' => 'O campo Descrição deve ter no mínimo 3 caracteres.',
             'peso.integer' => 'O campo Peso deve ser um número inteiro',
-            'unidade_id.exists' => 'O campo Unidade não foi preenchido corretamente.'
+            'unidade_id.exists' => 'O campo Unidade não foi preenchido corretamente.',
+            'fornecedor_id.exists' => 'O campo Fornecedor não foi preenchido corretamente.'
         ];
 
         $request->validate($regras, $feedback);
-        Produto::create($request->all());
+        Item::create($request->all());
 
         return redirect()->route('produto.index');
     }
@@ -78,15 +82,34 @@ class ProdutoController extends Controller
     public function edit(Produto $produto)
     {
         $unidades = Unidade::all();
-        return view('app.produto.edit', ['produto' => $produto, 'unidades' => $unidades]);
-        // return view('app.produto.create', ['produto' => $produto, 'unidades' => $unidades]);
+        $fornecedores = Fornecedor::all();
+        return view('app.produto.edit', ['produto' => $produto, 'unidades' => $unidades, 'fornecedores' => $fornecedores]);
+        //return view('app.produto.create', ['produto' => $produto, 'unidades' => $unidades]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produto $produto)
+    public function update(Request $request, Item $produto)
     {
+
+        $regras = [
+            'nome' => 'required|min:3',
+            'descricao' => 'required|min:3',
+            'peso' => 'required|integer',
+            'unidade_id' => 'exists:unidades,id', //exists:<tabela>,<coluna> - Usado para chave estrangeira, pega a tabela de origem e a coluna
+            'fornecedor_id' => 'exists:fornecedores,id'
+        ];
+        $feedback = [
+            'required' => 'O campo :attribute deve ser preenchido',
+            'nome.min' => 'O campo Nome deve ter no mínimo 3 caracteres.',
+            'descricao.min' => 'O campo Descrição deve ter no mínimo 3 caracteres.',
+            'peso.integer' => 'O campo Peso deve ser um número inteiro',
+            'unidade_id.exists' => 'O campo Unidade não foi preenchido corretamente.',
+            'fornecedor_id.exists' => 'O campo Fornecedor não foi preenchido corretamente.'
+        ];
+        $request->validate($regras, $feedback);
+
         $produto->update($request->all());
         return redirect()->route('produto.show', ['produto' => $produto->id]);
     }
